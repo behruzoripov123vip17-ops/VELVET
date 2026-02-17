@@ -1,0 +1,208 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Reservation | KOPPEE</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400&family=Playfair+Display:wght@400;500&family=Noto+Serif+JP:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <!-- Libraries Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" rel="stylesheet">
+    <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/css/tempusdominus-bootstrap-4.min.css"
+        rel="stylesheet" />
+    <link href="{% static 'css/style.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/japanese_theme.css' %}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div id="jp-preloader">
+        <div class="jp-spinner"></div>
+    </div>
+
+    <!-- Sakura Animation Container -->
+    <div id="jp-sakura-container"></div>
+
+    <!-- Navbar Start -->
+    <div class="container-fluid p-0 nav-bar">
+        <nav class="navbar navbar-expand-lg bg-none navbar-light py-3">
+
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                <div class="navbar-nav ml-auto p-4">
+                    <a href="{% url 'coffee:home' %}" class="nav-item nav-link" style="color: var(--jp-text);">Home</a>
+                    <a href="{% url 'coffee:about' %}" class="nav-item nav-link"
+                        style="color: var(--jp-text);">About</a>
+                    <a href="{% url 'coffee:service' %}" class="nav-item nav-link"
+                        style="color: var(--jp-text);">Service</a>
+                    <a href="{% url 'coffee:menu' %}" class="nav-item nav-link" style="color: var(--jp-text);">Menu</a>
+                    <a href="{% url 'coffee:reservation' %}" class="nav-item nav-link active"
+                        style="color: var(--jp-accent);">Reservation</a>
+                    <a href="{% url 'coffee:contact' %}" class="nav-item nav-link"
+                        style="color: var(--jp-text);">Contact</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->
+
+    <!-- Reservation Start -->
+    <div class="container-fluid jp-container jp-reveal">
+
+        <div class="jp-header">
+            <h2 class="jp-title">Table Reservation</h2>
+
+            <span class="jp-subtitle"></span>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="jp-form-card">
+                    <!-- Sakura decoration (CSS only or SVG) -->
+                    <div class="jp-decoration">
+                        <svg viewBox="0 0 100 100" fill="var(--jp-accent)">
+                            <path
+                                d="M50 0 C60 20 80 30 100 40 C80 50 60 80 50 100 C40 80 20 50 0 40 C20 30 40 20 50 0 Z" />
+                        </svg>
+                    </div>
+
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-success border-0 bg-light text-center mb-4"
+                        style="color: var(--jp-accent);">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+                    <form method="post" class="contact-form">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                {{ form.name }}
+                            </div>
+                            <div class="col-md-6 form-group">
+                                {{ form.email }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                {{ form.date }}
+                            </div>
+                            <div class="col-md-6 form-group">
+                                {{ form.time }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ form.guests }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.reservation_type }}
+                        </div>
+
+                        <div>
+                            <button class="btn btn-jp" type="submit">Book Table</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Reservation End -->
+
+    <!-- Footer Start -->
+    <div class="container-fluid text-center mt-5 py-4 jp-reveal" style="border-top: 1px solid #eee;">
+        <p class="m-0" style="color: var(--jp-text);"> &copy; <a class="font-weight-bold" href="{% url 'coffee:home' %}"
+                style="color: var(--jp-accent);">Royal Coffee</a>. All Rights Reserved.</p>
+    </div>
+    <!-- Footer End -->
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="{% static 'js/main.js' %}"></script>
+
+    <!-- Japanese Theme Animations -->
+    <script>
+        // Hide Preloader on Load
+        window.addEventListener('load', function () {
+            const preloader = document.getElementById('jp-preloader');
+            if (preloader) {
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 800);
+            }
+        });
+
+        // Sakura Animation
+        function createSakura() {
+            const container = document.getElementById('jp-sakura-container');
+            const petal = document.createElement('div');
+            petal.classList.add('jp-sakura');
+
+            // Randomize starting position and animation duration
+            const leftPos = Math.random() * 100;
+            const duration = Math.random() * 5 + 5; // 5-10s
+            const size = Math.random() * 10 + 10; // 10-20px
+
+            petal.style.left = leftPos + '%';
+            petal.style.animationDuration = duration + 's';
+            petal.style.width = size + 'px';
+            petal.style.height = size + 'px';
+
+            container.appendChild(petal);
+
+            // Remove after animation
+            setTimeout(() => {
+                petal.remove();
+            }, duration * 1000);
+        }
+
+        setInterval(createSakura, 300); // Create a new petal every 300ms
+
+        // Scroll Reveal
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('jp-visible');
+                    observer.unobserve(entry.target); // Only animate once
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.jp-reveal').forEach(section => {
+            observer.observe(section)
+        });
+    </script>
+</body>
+
+</html>
