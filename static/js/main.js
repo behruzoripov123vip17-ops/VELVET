@@ -66,5 +66,65 @@
         }
     });
     
-})(jQuery);
 
+    // Japanese ambient site audio.
+    // Browsers can block audible autoplay; in that case the first user interaction
+    // starts the music automatically. The toggle remains available at all times.
+    $(document).ready(function () {
+        const audio = document.getElementById('jp-site-audio');
+        const toggle = document.getElementById('jp-audio-toggle');
+        if (!audio || !toggle) return;
+
+        audio.volume = 0.28;
+
+        const syncAudioUi = function () {
+            const playing = !audio.paused;
+            toggle.classList.toggle('paused', !playing);
+            toggle.setAttribute('aria-pressed', String(playing));
+            toggle.setAttribute('aria-label', playing ? 'Turn music off' : 'Turn music on');
+            toggle.title = playing ? 'Pause music' : 'Play music';
+            toggle.innerHTML = playing
+                ? '<i class="fas fa-volume-up"></i>'
+                : '<i class="fas fa-volume-mute"></i>';
+        };
+
+        const startAudio = function () {
+            const promise = audio.play();
+            if (promise && typeof promise.catch === 'function') {
+                promise.catch(function () {
+                    // Audible autoplay was blocked by the browser.
+                    syncAudioUi();
+                });
+            }
+            syncAudioUi();
+        };
+
+        toggle.addEventListener('click', function (event) {
+            event.preventDefault();
+            if (audio.paused) {
+                startAudio();
+            } else {
+                audio.pause();
+                syncAudioUi();
+            }
+        });
+
+        ['pointerdown', 'keydown', 'touchstart'].forEach(function (eventName) {
+            document.addEventListener(eventName, function () {
+                if (audio.paused) startAudio();
+            }, { once: true, passive: true });
+        });
+
+        audio.addEventListener('play', syncAudioUi);
+        audio.addEventListener('pause', syncAudioUi);
+        audio.addEventListener('error', function () {
+            toggle.classList.add('paused');
+            toggle.setAttribute('aria-label', 'Music unavailable');
+            toggle.title = 'Music unavailable';
+        });
+
+        // Attempt audible autoplay immediately after the page is ready.
+        startAudio();
+    });
+
+})(jQuery);
