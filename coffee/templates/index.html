@@ -269,7 +269,13 @@
         </div>
     </div>
     <!-- Footer End -->
-
+    <!-- Ambient site music -->
+    <audio id="jp-site-audio" loop preload="auto" playsinline>
+        <source src="{% static 'video/about-coffee.mp4' %}" type="video/mp4">
+    </audio>
+    <button id="jp-audio-toggle" class="jp-audio-toggle paused" type="button" aria-label="Turn music on" aria-pressed="false" title="Music">
+        <i class="fas fa-volume-mute"></i>
+    </button>
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
