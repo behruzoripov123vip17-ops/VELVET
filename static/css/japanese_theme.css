@@ -1153,3 +1153,48 @@ a:hover {
     height: 60vh !important;
     min-height: 400px !important;
 }
+
+/* --- Global polish / reliable audio control --- */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+.jp-audio-toggle {
+    width: 52px;
+    height: 52px;
+    right: 24px;
+    bottom: 24px;
+    border: 1px solid rgba(255,255,255,.65);
+    background: rgba(72, 35, 30, .92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 12px 30px rgba(0,0,0,.24);
+    transition: transform .25s ease, background-color .25s ease, box-shadow .25s ease;
+}
+
+.jp-audio-toggle:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 16px 34px rgba(0,0,0,.3);
+}
+
+.jp-audio-toggle:focus-visible {
+    outline: 3px solid rgba(220, 180, 110, .8);
+    outline-offset: 4px;
+}
+
+.jp-audio-toggle.paused {
+    background: rgba(45, 45, 45, .88);
+}
+
+@media (max-width: 575.98px) {
+    .jp-audio-toggle {
+        width: 46px;
+        height: 46px;
+        right: 16px;
+        bottom: 16px;
+    }
+}
