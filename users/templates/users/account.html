@@ -1,0 +1,38 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Account · KOPPEE</title>
+<link href="{% static 'css/style.min.css' %}" rel="stylesheet">
+<link href="{% static 'css/japanese_theme.css' %}" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+<style>
+.account-page{min-height:100vh;padding:80px 20px;background:var(--jp-bg,#f6f0e8)}
+.account-shell{max-width:1000px;margin:auto}.account-card{background:#fff;border-radius:24px;padding:32px;margin-bottom:24px;box-shadow:0 18px 60px rgba(0,0,0,.10)}
+.account-head{display:flex;gap:24px;align-items:center;flex-wrap:wrap}.account-avatar{width:112px;height:112px;border-radius:50%;object-fit:cover;border:4px solid #fff;box-shadow:0 8px 24px rgba(0,0,0,.16)}
+.reservation-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:18px 0;border-bottom:1px solid #eadfd2}
+@media(max-width:700px){.reservation-row{grid-template-columns:1fr 1fr}.account-card{padding:22px}}
+</style>
+</head>
+<body>
+<div class="account-page"><div class="account-shell">
+<a href="{% url 'coffee:home' %}" class="btn btn-outline-primary mb-4">← Back to KOPPEE</a>
+<div class="account-card"><div class="account-head">
+{% if profile.avatar %}<img class="account-avatar" src="{{ profile.avatar.url }}" alt="Profile avatar">
+{% else %}<div class="account-avatar d-flex align-items-center justify-content-center bg-secondary text-white"><i class="fas fa-user fa-3x"></i></div>{% endif %}
+<div><h1>{{ request.user.get_full_name|default:request.user.username }}</h1><p>{{ request.user.email }}</p><span class="text-muted">Signed in with Google</span></div>
+</div><hr class="my-4"><h3>Profile picture</h3>
+<p class="text-muted">Choose an image from your phone or computer.</p>
+<form method="post" enctype="multipart/form-data" action="{% url 'users:upload_avatar' %}">
+{% csrf_token %}{{ avatar_form.avatar }}<button class="btn btn-primary mt-3" type="submit">Save avatar</button>
+</form></div>
+<div class="account-card"><h2>My reservations</h2>
+{% if reservations %}{% for reservation in reservations %}<div class="reservation-row">
+<div><strong>Date</strong><br>{{ reservation.date }}</div><div><strong>Time</strong><br>{{ reservation.time }}</div>
+<div><strong>Guests</strong><br>{{ reservation.guests }}</div><div><strong>Type</strong><br>{{ reservation.get_reservation_type_display }}</div>
+</div>{% endfor %}{% else %}<p class="text-muted">No reservations yet.</p>{% endif %}
+</div>
+<div class="account-card"><form method="post" action="{% url 'users:logout' %}">{% csrf_token %}<button class="btn btn-outline-dark" type="submit">Sign out</button></form></div>
+</div></div>
+</body></html>
