@@ -1,4 +1,5 @@
 from urllib.parse import urlencode
+import secrets
 from urllib.request import Request as UrlRequest, urlopen
 import json
 
@@ -20,6 +21,7 @@ def google_login(request):
     if not settings.GOOGLE_CLIENT_ID:
         return render(request, "users/google_setup.html", status=503)
     request.session["login_next"] = request.GET.get("next") or "/account/"
+    request.session["google_oauth_state"] = secrets.token_urlsafe(32)
     params = {
         "client_id": settings.GOOGLE_CLIENT_ID,
         "redirect_uri": settings.GOOGLE_REDIRECT_URI,
@@ -27,14 +29,19 @@ def google_login(request):
         "scope": "openid email profile",
         "access_type": "online",
         "prompt": "select_account",
+        "state": request.session["google_oauth_state"],
     }
     return redirect("https://accounts.google.com/o/oauth2/v2/auth?" + urlencode(params))
 
 
 def google_callback(request):
     code = request.GET.get("code")
-    if not code or request.GET.get("error"):
+    if request.GET.get("error"):
         return redirect("coffee:home")
+    state = request.GET.get("state")
+    expected_state = request.session.pop("google_oauth_state", None)
+    if not code or not state or state != expected_state:
+        return render(request, "users/google_error.html", {"message": "Invalid Google sign-in state. Please try again."}, status=400)
 
     token_body = urlencode({
         "code": code,
