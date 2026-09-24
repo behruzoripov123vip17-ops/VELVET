@@ -24,6 +24,10 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{% static 'css/style.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/japanese_theme.css' %}" rel="stylesheet">
+    <style>
+        .jp-account-nav{position:relative}
+        .jp-account-nav .jp-account-dot{width:7px;height:7px;border-radius:50%;background:#8f6b52;display:inline-block;margin-left:5px}
+    </style>
 </head>
 
 <body>
@@ -55,6 +59,10 @@
                         </div>
                     </div>
                     <a href="{% url 'coffee:contact' %}" class="nav-item nav-link">Contact</a>
+                    <a href="{% url 'users:account' %}" class="nav-item nav-link">
+                        <i class="fas fa-user-circle mr-1"></i>
+                        {% if request.user.is_authenticated %}My Account{% else %}Continue with Google{% endif %}
+                    </a>
                 </div>
             </div>
         </nav>
